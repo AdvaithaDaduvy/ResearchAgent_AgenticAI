@@ -4,13 +4,13 @@ from anothercrew import run_research_bot
 import os
 
 def main():
-    # PDF file paths - Update these to match your actual file paths
+    # PDF file paths 
     pdfs = [
-        "C:\\Users\\ADMIN\\Desktop\\Research\\p_r_o\\ag\\data\\algorithms-16-00176.pdf",
-        "C:\\Users\\ADMIN\\Desktop\\Research\\p_r_o\\ag\\data\\Applied Computational Intelligence and Soft Computing - 2022 - Khan - Intelligent Model for Brain Tumor Identification.pdf"
+        "\data\\algorithms-16-00176.pdf",
+        "\data\\Applied Computational Intelligence and Soft Computing - 2022 - Khan - Intelligent Model for Brain Tumor Identification.pdf"
     ]
     
-    # Verify PDF files exist
+    
     print("🔍 Verifying PDF files...")
     for i, pdf_path in enumerate(pdfs):
         if os.path.exists(pdf_path):
@@ -28,7 +28,7 @@ def main():
     print("=" * 80)
     
     try:
-        # Run the research bot
+        
         final_answer = run_research_bot(pdfs, user_question)
         
         print("\n" + "=" * 80)
@@ -37,7 +37,7 @@ def main():
         print(final_answer)
         print("=" * 80)
         
-        # Optional: Save results to file
+        
         save_results = input("\n💾 Would you like to save the results to a file? (y/n): ").lower().strip()
         if save_results == 'y':
             output_file = "research_prediction_results.txt"
@@ -59,13 +59,13 @@ def main():
         print("3. Ensure all required dependencies are installed")
         print("4. Verify your CrewAI agents are properly set up")
         
-        # Show full traceback for debugging
+        
         import traceback
         print(f"\n🐛 Full error details:")
         traceback.print_exc()
 
 if __name__ == "__main__":
-    print("🚀 Starting AI Research Assistant...")
+    print(" Starting AI Research Assistant...")
     print("This tool will analyze research papers and provide predictions based on your query.")
     print()
     
