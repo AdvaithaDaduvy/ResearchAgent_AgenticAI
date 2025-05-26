@@ -60,3 +60,41 @@ def run_research_bot(pdf_paths: list[str], user_query: str):
         raise ValueError("Could not extract final prediction from CrewOutput")
 
     return final_prediction
+
+def run_research_bot_with_progress(pdf_paths, user_query):
+    yield "Starting analysis..."
+
+    # Step 1: Extraction
+    yield "🔍 Running extractor agents..."
+    extraction_tasks = [create_extraction_task(path) for path in pdf_paths]
+    crew_extraction = Crew(agents=[task.agent for task in extraction_tasks], tasks=extraction_tasks)
+    summaries_result = crew_extraction.kickoff()
+
+    summaries = extract_crew_output(summaries_result)
+    yield f"📄 Extracted summaries from {len(pdf_paths)} paper(s)."
+
+    # Step 2: Analysis
+    yield "📊 Running analyst agent..."
+    analysis_task = create_analysis_task(summaries)
+    crew_analysis = Crew(agents=[analysis_task.agent], tasks=[analysis_task])
+    analysis_result = crew_analysis.kickoff()
+
+    pattern_report = extract_crew_output(analysis_result)
+    yield "📈 Pattern analysis complete."
+
+    # Step 3: Prediction
+    yield "🤖 Running prediction agent..."
+    prediction_task = create_prediction_task(user_query, pattern_report)
+    crew_prediction = Crew(agents=[prediction_task.agent], tasks=[prediction_task])
+    prediction_result = crew_prediction.kickoff()
+
+    final_prediction = extract_crew_output(prediction_result)
+    yield f"data: ✅ Final Prediction: {final_prediction}\n\n"
+
+def extract_crew_output(output):
+    if hasattr(output, "raw") and output.raw:
+        return output.raw if isinstance(output.raw, str) else list(output.raw)
+    elif hasattr(output, "output") and output.output:
+        return output.output if isinstance(output.output, str) else list(output.output)
+    else:
+        return "⚠️ No valid output found."

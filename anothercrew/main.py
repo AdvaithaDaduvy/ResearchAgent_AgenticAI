@@ -6,8 +6,8 @@ import os
 def main():
     # PDF file paths 
     pdfs = [
-        "\data\\algorithms-16-00176.pdf",
-        "\data\\Applied Computational Intelligence and Soft Computing - 2022 - Khan - Intelligent Model for Brain Tumor Identification.pdf"
+        "../data/algorithms-16-00176.pdf",
+        "../data/Applied Computational Intelligence and Soft Computing - 2022 - Khan - Intelligent Model for Brain Tumor Identification.pdf"
     ]
     
     
@@ -72,3 +72,24 @@ if __name__ == "__main__":
     main()
     
     print("\n👋 Research analysis complete!")
+
+# main.py
+
+from anothercrew import run_research_bot
+import os
+
+def run_ai_research(pdfs, user_question):
+    print("🔍 Verifying PDF files...")
+    for i, pdf_path in enumerate(pdfs):
+        if os.path.exists(pdf_path):
+            print(f"✅ PDF {i+1}: Found - {os.path.basename(pdf_path)}")
+        else:
+            raise FileNotFoundError(f"❌ PDF {i+1}: NOT FOUND - {pdf_path}")
+    
+    print(f"\n🤔 Research Question: {user_question}")
+    print(f"📚 Analyzing {len(pdfs)} research papers...")
+    print("=" * 80)
+    
+    final_answer = run_research_bot(pdfs, user_question)
+    return final_answer
+
